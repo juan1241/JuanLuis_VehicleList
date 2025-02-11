@@ -1,0 +1,23 @@
+﻿@using Domain
+<h3>ListaVehiculo</h3>
+
+<div class="card">
+	@($" Marca: {vehiculo.Marca} - {vehiculo.Modelo} - {vehiculo.Año}")
+	<span class="btn btn-danger" @onclick="EliminarArticulo">Eliminar</span>
+</div>
+
+@code {
+	[Parameter]
+	public Vehiculos vehiculo { get; set; } = null!;
+	[Parameter]
+	public EventCallback<int> Delete { get; set; }
+
+	private async Task EliminarArticulo()
+	{
+		if (Delete.HasDelegate)
+		{
+			await Delete.InvokeAsync(vehiculo.Id);
+		}
+	}
+
+}
