@@ -6,13 +6,13 @@
 <div class="Card-header">
 	<div class="card-body">
 		<label class="name">Marca del vehiculo:</label>
-		<input @bind="vehiculos.Marca" type="text" placeholder="Agregar Marca" />
+		<input @bind="vehiculo.Marca" type="text" placeholder="Agregar Marca" />
 
 		<label class="name">Modelo del Vehiculo:</label>
-		<input @bind="vehiculos.Modelo" type="text" placeholder="Modelo" /><br />
+		<input @bind="vehiculo.Modelo" type="text" placeholder="Modelo" /><br />
 
 		<label class="name">Año del vehiculo:</label>
-		<input @bind="vehiculos.Año" type="text" placeholder="Año del vehiculo" /><br />
+		<input @bind="vehiculo.Año" type="text" placeholder="Año del vehiculo" /><br />
 
 		<span class="btn btn-primary" @onclick="Agregar">Agregar a la lista</span>
 	</div>
@@ -22,34 +22,34 @@
 
 <div class="card-body">
 		<ul>
-			@if(V.Any())
+			@if(vehiculos.Any())
 			{
-				foreach(var Vehiculos in V)
+				foreach(var v in vehiculos)
 				{
-					<ListadeVehiculos.Components.ListadeVehiculos.ListaVehiculo vehiculo="Vehicle" Delete="()=>Delete(Vehiculos.Id)"/>
+					<ListadeVehiculos.Components.ListadeVehiculos.ListaVehiculo vehiculo="v" Delete="()=>Eliminar(v.Id)"/>
 				}
 			}
 		</ul>
 	</div>
 
 @code {
-	public Vehiculos vehiculos { get; set; } = new();
-	public List<Vehiculos> V {get; set;} = [];
+	public VehiculoDto vehiculo { get; set; } = new();
+	public List<VehiculoDto> vehiculos { get; set; } = [];
 
 	void Agregar()
 	{
-		vehiculos.Id = V.Any() ? V.Max(v => v.Id) + 1 : 1;
-		V.Add(vehiculos);
-		vehiculos = new();
+		vehiculo.Id = vehiculos.Any() ? vehiculos.Max(v => v.Id) + 1 : 1;
+		vehiculos.Add(vehiculo);
+		vehiculo = new();
 		StateHasChanged();
 	}
 
 	void Eliminar(int Id)
 	{
-		var Vehiculo = V.FirstOrDefault(v => v.Id == Id);
+		var Vehiculo = vehiculos.FirstOrDefault(v => v.Id == Id);
 		if (Vehiculo != null)
 		{
-			V.Remove(Vehiculo);
+			vehiculos.Remove(Vehiculo);
 			StateHasChanged();
 		}
 	}
